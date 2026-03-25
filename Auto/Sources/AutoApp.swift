@@ -11,12 +11,22 @@ import CoreData
 @main
 struct AutoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    let persistenceController = PersistenceController.shared
+
+    private let container: AppContainer
+    private let viewContext: NSManagedObjectContext
+    @StateObject private var coordinator: AppCoordinator
+
+    init() {
+        let container = AppContainer()
+        self.container = container
+        self.viewContext = container.container.resolve(NSManagedObjectContext.self)!
+        _coordinator = StateObject(wrappedValue: container.container.resolve(AppCoordinator.self)!)
+    }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            coordinator.start()
+                .environment(\.managedObjectContext, viewContext)
         }
     }
 }
