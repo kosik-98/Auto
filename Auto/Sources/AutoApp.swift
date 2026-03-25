@@ -10,6 +10,7 @@ import CoreData
 
 @main
 struct AutoApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {

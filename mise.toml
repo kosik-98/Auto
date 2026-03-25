@@ -1,0 +1,48 @@
+[settings]
+experimental = true
+
+[tools]
+xcbeautify = '3.0.0'
+"spm:SwiftGen/SwiftGen" = '6.6.3'
+"spm:yonaskolb/xcodegen" = '2.44.1'
+"spm:nicklockwood/SwiftFormat" = '0.58.2'
+"spm:realm/SwiftLint" = '0.61.0'
+
+[env]
+XC_PROJECT = "Auto"
+OUTPUT_DIR = "temp_output"
+
+# ============================================================================
+# TASKS - Replace all bash scripts with mise tasks
+# ============================================================================
+
+# ------------------------------
+# Setup & Installation
+# ------------------------------
+
+[tasks.setup]
+description = "Full project setup"
+run = [
+    "mise run xcodegen",
+    "defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES"
+]
+
+[tasks.fast-setup]
+description = "Quick setup without full tool install"
+run = [
+    "mise run xcodegen",
+    "defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES"
+]
+
+# ------------------------------
+# Project Generation
+# ------------------------------
+
+[tasks.xcodegen]
+description = "Generate Xcode project with XcodeGen"
+quiet = true
+run = '''
+echo "Generating Xcode project with XcodeGen..."
+xcodegen --version
+xcodegen generate -s project.yml
+'''
